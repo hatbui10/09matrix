@@ -216,7 +216,7 @@ if(c >= 5) return 0
 if(c < 5) return 1
 
 // 1 lớn 1 nhỏ
-if((a < 5 && b < 5)) return 0
+if((c < 5 && b < 5)) return 0
 
 // còn lại
 return "BỎ QUA"
@@ -237,7 +237,7 @@ return 0
 case 4:
 
 // trước số 4 có 2 số <5
-if(a < 5 && b < 5) return 1
+if(c < 5 && b < 5) return 1
 
 // còn lại
 return 0
@@ -253,10 +253,10 @@ case 6:
 if( c >= 5) return 1
 
 // 2 số <5
-if(a < 5 && b < 5) return 1
+if(c < 5 && b < 5) return 1
 
 // 1 lớn 1 nhỏ
-if((a >= 5 && b <= 5) || (a <= 5 && b >= 5)) return 0
+if((c >= 5 && b <= 5) || (c <= 5 && b >= 5)) return 0
 
 // còn lại
 return "BỎ QUA"
@@ -303,7 +303,7 @@ return "BỎ QUA"
 case 9:
 
 // 2 số <5
-if(a < 5 && b < 5) return 1
+if(c < 5 && b < 5) return 1
 
 // 1 số <5 và 1 số >5
 if((c <= 5 && b >= 5) || (c >= 5 && b <= 5)) return 1
