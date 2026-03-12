@@ -211,6 +211,13 @@ flash(C)
 return 0
 }
 
+
+  if( c==7)
+ {
+flash(C)
+return 0
+}
+                  
 // trước 0 có 2 số <5
 if(b<5 && c<5) return 0
 
@@ -219,11 +226,7 @@ if(b>=5 && c>=5) return 1
 
 
          
-if( c==7)
- {
-flash(C)
-return 0
-}
+
 
 // trước 0 có 1 số <5
 if( c<5) return 1 
@@ -444,6 +447,7 @@ box.classList.remove("flash")
 
 </body>
 </html>
+
 
 
 
