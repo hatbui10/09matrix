@@ -2,488 +2,206 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>0-9 Matrix</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tool Chuẩn - Logic 5 Ô Sau</title>
 <style>
-body{
-background:#0f172a;
-font-family:Arial;
-display:flex;
-justify-content:center;
-margin-top:80px;
-color:white
-}
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f172a;
+    color: white;
+    max-width: 420px;
+    margin: auto;
+    padding: 10px;
+    text-align: center;
+  }
 
-.panel{
-background:#1e293b;
-padding:25px;
-border-radius:12px
-}
+  .top-display {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin: 15px 0;
+  }
+  .top-display input {
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    border: 2px solid #38bdf8;
+    background: rgba(56, 189, 248, 0.1);
+    color: #38bdf8;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    outline: none;
+  }
 
-.row{
-display:flex;
-gap:15px
-}
+  .input-section {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #334155;
+  }
 
-.box{
-display:flex;
-flex-direction:column;
-align-items:center
-}
+  #input50 {
+    width: 80px;
+    height: 60px;
+    font-size: 35px;
+    text-align: center;
+    border-radius: 10px;
+    border: 3px solid #f43f5e;
+    background: #0f172a;
+    color: #f43f5e;
+    font-weight: bold;
+    outline: none;
+  }
 
-label{
-margin-bottom:6px;
-font-weight:bold
-}
+  #cell49 {
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    background: #fbbf24;
+    color: #000;
+    line-height: 45px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 22px;
+    margin-top: 10px;
+  }
 
-input{
-width:50px;
-height:50px;
-font-size:30px;
-font-weight:bold;
-text-align:center;
-border:none;
-border-radius:8px
-}
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+    margin-top: 10px;
+    direction: rtl; /* Phải sang Trái */
+  }
+  .cell {
+    height: 38px;
+    background: #334155;
+    border: 1px solid #475569;
+    line-height: 38px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    direction: ltr; 
+  }
 
-.result{
-margin:25px auto;
-font-size:40px;
-font-weight:bold;
-text-align:center;
-color: white;
-border: 1px solid white;
-border-radius:8px;
-width:60%;
-background: red;
-padding:8px 14px;   /* khoảng cách giữa chữ và khung */
+  .match-origin {
+    background: #ef4444 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff;
+  }
 
+  .blink-gradient {
+    animation: gentleGradient 1.5s infinite alternate ease-in-out;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
 
-
-animation:blink 0.8s infinite alternate;
-text-shadow:
-0 0 8px white,
-0 0 16px white,
-0 0 24px rgba(34,197,94,0.7);
-}
-
-@keyframes blink{
-from{
-opacity:1;
-transform:scale(1);
-}
-to{
-opacity:0.4;
-transform:scale(1.05);
-}
-}
-
-
-
-.inputBox{
-margin-top:20px;
-text-align:center
-}
-
-.inputBox input{
-width:120px;
-height:60px;
-font-size:28px
-}
-
-.title{
-text-align:center;
-font-size:26px;
-font-weight:bold;
-margin-bottom:25px;
-letter-spacing:3px;
-
-background:linear-gradient(90deg,#38bdf8,#a78bfa,#f472b6);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-
-text-shadow:
-0 0 8px rgba(168,85,247,0.6),
-0 0 16px rgba(56,189,248,0.4);
-
-animation:glow 3s ease-in-out infinite alternate;
-}
-
-@keyframes glow{
-from{
-text-shadow:
-0 0 6px rgba(168,85,247,0.4),
-0 0 12px rgba(56,189,248,0.3);
-}
-to{
-text-shadow:
-0 0 12px rgba(168,85,247,0.9),
-0 0 22px rgba(56,189,248,0.8);
-}
-}
-
-.flash{
-animation:flashBox 0.6s;
-box-shadow:
-0 0 10px #22c55e,
-0 0 20px #22c55e,
-0 0 30px #22c55e;
-}
-
-@keyframes flashBox{
-0%{transform:scale(1)}
-50%{transform:scale(1.2)}
-100%{transform:scale(1)}
-}
-
-
-
+  @keyframes gentleGradient {
+    0% { background: linear-gradient(135deg, #2563eb, #06b6d4); }
+    100% { background: linear-gradient(135deg, #7c3aed, #db2777); }
+  }
 </style>
 </head>
-
 <body>
 
-<div class="panel">
-<div class="title">Logic 0-9 matrix</div>
-<div class="row">
-<div class="box"><label>A</label><input id="A" readonly></div>
-<div class="box"><label>B</label><input id="B" readonly></div>
-<div class="box"><label>C</label><input id="C" readonly></div>
-<div class="box"><label>D</label><input id="D" readonly></div>
+<div class="top-display" id="topRes"></div>
+
+<div class="input-section">
+  <div style="font-size: 12px; color: #94a3b8;">NHẬP Ô 50</div>
+  <input id="input50" type="tel" maxlength="1" autocomplete="off">
+  <br>
+  <div style="font-size: 12px; color: #94a3b8; margin-top: 10px;">Ô 49</div>
+  <div id="cell49">-</div>
 </div>
 
-<div class="inputBox">
-<input id="INPUT" type="tel" inputmode="numeric" placeholder="Nhập số">
-</div>
-
-<div id="result" class="result">...</div>
-
-</div>
+<div class="grid" id="mainGrid"></div>
 
 <script>
+const input50 = document.getElementById("input50");
+const cell49 = document.getElementById("cell49");
+const mainGrid = document.getElementById("mainGrid");
+const topRes = document.getElementById("topRes");
 
-const A=document.getElementById("A")
-const B=document.getElementById("B")
-const C=document.getElementById("C")
-const D=document.getElementById("D")
-const INPUT=document.getElementById("INPUT")
-const result=document.getElementById("result")
+let data48 = Array(48).fill(""); 
+let val49 = "";
+let topInputs = [];
 
-window.onload=()=>INPUT.focus()
-
-INPUT.addEventListener("input",()=>{
-
-let v=parseInt(INPUT.value)
-if(isNaN(v)) return
-
-// dịch chuyển 4 số
-A.value=B.value
-B.value=C.value
-C.value=D.value
-D.value=v
-
-INPUT.value=""
-INPUT.focus()
-
-let a=parseInt(A.value)
-let b=parseInt(B.value)
-let c=parseInt(C.value)
-let d=parseInt(D.value)
-
-if(!isNaN(a)&&!isNaN(b)&&!isNaN(c)&&!isNaN(d)){
-result.textContent=logic(a,b,c,d)
+for(let i=0; i<5; i++) {
+  let inp = document.createElement("input");
+  inp.readOnly = true;
+  topRes.appendChild(inp);
+  topInputs.push(inp);
 }
 
-})
-
-function logic(a,b,c,d){
-
-switch(d){
-////////////////////////////////////////////////////////////////
-case 0:
-
-// gặp 000
-// gặp 000
-if(a==0 && b==0 && c==0){
-flash(A)
-flash(B)
-flash(C)
-return 0
+for(let i=0; i<48; i++) {
+  let d = document.createElement("div");
+  d.className = "cell";
+  d.id = "idx" + i;
+  mainGrid.appendChild(d);
 }
 
-if(b==1&& c==2){
+input50.addEventListener("input", function() {
+  const val = this.value.trim();
+  if (val === "") return;
 
-flash(B)
-flash(C)
-return 0
-}
+  // Dịch chuyển dữ liệu (Phải -> Trái)
+  for (let i = 47; i > 0; i--) {
+    data48[i] = data48[i-1];
+  }
+  data48[0] = val49;
+  val49 = val;
+  cell49.innerText = val49;
 
+  // Reset giao diện
+  for (let i = 0; i < 48; i++) {
+    const el = document.getElementById("idx" + i);
+    el.innerText = data48[i];
+    el.classList.remove("blink-gradient", "match-origin");
+  }
+  topInputs.forEach(input => input.value = "");
 
-  ( c==7)
- {
-flash(C)
-return 0
-}
-                  
-// trước 0 có 2 số <5
-if(b<5 && c<5) return 0
+  // --- LOGIC TÌM KIẾM MỚI ---
+  let foundIndex = -1;
 
-// trước 0 có 2 số >5
-if(b>=5 && c>=5) return 1
+  // Duyệt tìm ô trùng gần nhất (Duyệt từ 0 vì 0 là mới nhất)
+  for (let i = 0; i < 48; i++) {
+    if (data48[i] === val49 && val49 !== "") {
+      
+      // KIỂM TRA ĐIỀU KIỆN ĐỦ: Phía bên phải (Index nhỏ hơn i) phải có đủ 5 ô có dữ liệu
+      // Vì logic soi bên phải là lấy i-1, i-2, i-3, i-4, i-5
+      let hasEnoughData = true;
+      for (let k = 1; k <= 5; k++) {
+        let checkIdx = i - k;
+        if (checkIdx < 0 || data48[checkIdx] === "") {
+          hasEnoughData = false;
+          break;
+        }
+      }
 
-
-         
-
-
-// trước 0 có 1 số <5
-if( c<5) return 1 
-
-
-// còn lại
-return 0
-
-////////////////////////////////////////////////////////////////
-case 1:
-
-if(b==2 && c==3){
-flash(B)
-flash(C)
-return 0
-}
-
-if(b==1 && c==8){
-flash(B)
-flash(C)
-return 0
-}
-
-    if(b==9 && c==7){
-flash(B)
-flash(C)
-return 0
+      if (hasEnoughData) {
+        foundIndex = i;
+        break; // Tìm thấy ô gần nhất thỏa mãn cả 2 điều kiện thì dừng
+      }
     }
+  }
 
-return 1
+  // Nếu tìm thấy ô thỏa mãn
+  if (foundIndex !== -1) {
+    document.getElementById("idx" + foundIndex).classList.add("match-origin");
 
-
-////////////////////////////////////////////////////////////////
-case 2:
-
-if(b==9 && c==6) {
-flash(B)
-flash(C)
-return 0
-}
-
-
-
-// 2 số >5
-if(c >= 5) return 0
-
-if(c < 5){
-   if(b < 5) return 0
-   else return 1
-}
-
-// còn lại
-return "BỎ QUA"
-
-////////////////////////////////////////////////////////////////
-
-
-case 3:
-
-if(c==3 && d==3){
-flash(C)
-flash(D)
-return 0
-}
-
-// trước số 3 có 2 số <5
-if(b<5 && c<5) return 1
-
-// còn lại
-return 0
-
-////////////////////////////////////////////////////////////////
-case 4:
-
-
-
-if(b==6 && c==0) {
-flash(B)
-flash(C)
-return 1
-}
-
-    if(b==8 && c==4) {
-flash(B)
-flash(C)
-return 1
+    for (let j = 1; j <= 5; j++) {
+      let rightIdx = foundIndex - j;
+      topInputs[j-1].value = data48[rightIdx];
+      document.getElementById("idx" + rightIdx).classList.add("blink-gradient");
     }
+  }
 
- if(b==5 && c==3) {
-flash(B)
-flash(C)
-return 0
-}
+  this.value = "";
+});
 
-// trước số 4 có 2 số <5
-if(b < 5 && c < 5) return 1
-
-                  
-
-// còn lại
-return 0
-
-////////////////////////////////////////////////////////////////
-case 5: 
-  if( c == 4 ) {
-flash(C)
-
-}
-
-  return 1
-
-////////////////////////////////////////////////////////////////
-
-case 6:
-
-
-  if(a==8 && b==8 && c == 0) 
-  {
-flash(A)
-flash(B)
-flash(C)
-return 1
-}
-
-// 2 số >5
-if( c >= 5) return 1
-
-// 2 số <5
-if(b < 5 && c < 5) return 1
-
-// 1 lớn 1 nhỏ
-if((b >= 5 && c <= 5) || (b <= 5 && c >= 5)) return 0
-
-
-// còn lại
-return "BỎ QUA"
-
-////////////////////////////////////////////////////////////////
-case 7:
-
-
-if (c == 0 || c == 7 || c == 4) {
-    flash(C)
-    return 1
-}
-    
-if((b==5 && c==2) || (b==2 && c==5)) 
- {
-
-flash(B)
-flash(C)
-return 1
-}
-
-                  
-
-
-
-// 3 số liên tiếp đều >7
-if(a >= 7 && b >= 7&& c >= 7) return 1
-// trước 7 có 2 số <5
-if(b <= 5 && c <= 5) return 0
-
-
-
-// ngoài các trường hợp trên
-return "BỎ QUA"
-
-////////////////////////////////////////////////////////////////
-case 8:
-if(b==c && b<=5) return 1
-if(a==7 && b==9 && c == 0) 
- {
-flash(A)
-flash(B)
-flash(C)
-return 1
-}
-
-
-return 0
-
-////////////////////////////////////////////////////////////////
-case 9:
-if(b==3 && c==0) 
- {
-flash(B)
-flash(C)
-return 0
-}
-
-    if(b==8 && c==3) 
- {
-flash(B)
-flash(C)
-return 0
- }
-
-
-if(b==5 && c==0){
-flash(B)
-flash(C)
-return 0
-}
-
-    if( c == 9) 
- {
-flash(C)
-return 1
- }
-
-    // 2 số <5
-if(b < 5 && c < 5) return 1
-    
-// 1 số <5 và 1 số >5
-if((b <= 5 && c >= 5) || (b >= 5 && c <= 5)) return 1
-
-
-
-
-// ngoài 2 trường hợp trên
-return "BỎ QUA"
-////////////////////////////////////////////////////////////////
-
-}
-
-return 0
-}
-
-
-function flash(box){
-box.classList.add("flash")
-
-setTimeout(()=>{
-box.classList.remove("flash")
-},2000)
-}
-
+document.body.addEventListener("click", () => input50.focus());
+input50.focus();
 </script>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
