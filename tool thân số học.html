@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tính 22 Chỉ Số Thần Số Học (Chuẩn hóa họ tên & ngày sinh)</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-image: url('https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/474095zRS/hinh-anh-bien-nang-ngay-he_044800126.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      padding: 30px;
+    }
+    
+    .box {
+  
+  border: 10px solid gold;      /* 👈 viền vàng */
+  border-radius: 16px;
+  padding: 30px 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  left: 400px;
+   }
+  
+    h1 { color: #333; text-shadow: 1px 1px 3px #000; }
+    input, button {
+      padding: 8px; margin: 6px 0; width: 100%; max-width: 360px;
+      border-radius: 6px; border: none;
+    }
+    
+    label {color: #333; font-size: 15px;}
+    
+    button {
+      background: #3498db; 
+      color: #fff; 
+      cursor: pointer; 
+      font-size: 25px;
+      width: 150px ;
+      height: 80px ;
+      font-weight: bold;   /* đậm */
+      font-style: italic;  /* nghiêng */
+      border-radius: 30px;
+      border: 5px solid #333;
+    }
+    
+    button:hover { background: #2980b9; }
+    
+    #resultTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 20px;
+}
+
+#resultTable th, #resultTable td {
+  border: 1px solid #fff;     /* viền trắng */
+  padding: 8px 12px;
+  text-align: left;
+}
+
+#resultTable th {
+  background-color: rgba(255, 215, 0, 0.3); /* vàng nhạt cho header */
+}
+
+#resultTable td.number {
+  font-weight: bold;
+  font-size: 18px;
+  color: #ffde7b;   /* số bình thường */
+}
+
+#resultTable td.master {
+  font-weight: bold;
+  color: #ff4b2b;   /* số 11,22,33 nổi bật */
+  text-shadow: 0 0 5px #ffcc33;
+  font-size: 25px;
+}
+
+    
+    
+    
+    .result {
+      background: rgba(0,0,0,0.6);
+      margin-top: 20px; padding: 18px; border-radius: 10px;
+    }
+    
+   
+
+
+    
+    
+    .chart-section {
+      background: rgba(0,0,0,0.6);
+      border-radius: 12px; padding: 16px; margin-top: 24px;
+    }
+    
+    #radarChart {
+  width: 800px !important;
+  height: 600px !important;
+  max-width: 100%;
+  
+  display: block;
+  margin: 20px auto;
+}
+
+
+.input-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 20px;               /* khoảng cách giữa 2 cột */
+  margin-bottom: 20px;
+  flex-wrap: wrap;         /* để không bị vỡ trên màn hình nhỏ */
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.input-group label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #8b0000;
+}
+
+.input-group input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ff6666;
+  background: #fff5f5;
+  width: 200px;            /* 👈 chỉnh độ rộng mỗi ô */
+}
+
+
+#barChart {
+  max-width: 600px;   /* 👈 Giới hạn chiều rộng tối đa */
+  max-height: 400px;  /* 👈 Giới hạn chiều cao tối đa */
+  margin: 0 auto;     /* 👈 Căn giữa */
+  display: block;
+}
+    canvas { width: 500 !important; height: 380px !important; }  
+    
+    .pyramid-container {
+  background: rgba(0,0,0,0.7);
+  border: 2px solid gold;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 40px;
+  text-align: center;
+  color: #fff;
+}
+
+.pyramid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.level {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 10px 0;
+}
+
+.level span, .level1, .level3 {
+  background: linear-gradient(135deg, #ffb347, #ffcc33);
+  color: #000;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  line-height: 70px;
+  text-align: center;
+  font-size: 22px;
+  box-shadow: 0 0 10px gold;
+}
+
+.pyramid-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.pyramid-table th, .pyramid-table td {
+  border: 1px solid #fff;
+  padding: 8px;
+}
+.pyramid-table th {
+  background: rgba(255,215,0,0.3);
+}
+
+    </style>
+</head>
+<body>
+
+  <div class="box">
+  <h1>🔮 Tính 22 Chỉ Số Thần Số Học</h1>
+
+  <!-- Khối chứa tên + ngày sinh trên cùng 1 hàng -->
+  <div class="input-row">
+    <div class="input-group">
+      <label>Họ và tên:</label>
+      <input type="text" id="fullname" placeholder="Ví dụ: Đặng Mạnh Hùng">
+    </div>
+
+    <div class="input-group">
+      <label>Ngày sinh:</label>
+      <input type="date" id="birthday">
+    </div>
+  </div>
+
+  <button onclick="calculateAll()">Tính toán 22 chỉ số</button>
+</div>
+    <div id="result" class="result"></div>
+  
+  <!-- Nơi để chèn biểu đồ -->
+  <div id="charts" class="chart-section" style="display:none;">
+    <h2>📊 Biểu đồ 22 chỉ số</h2>
+    <canvas id="barChart" width="400" height="300"></canvas>
+    <canvas id="radarChart" style="margin-top:30px;"></canvas>
+  </div>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+  // ========== Phần cũ của bạn giữ nguyên hoàn toàn ==========
+  const nameInput = document.getElementById('fullname');
+  const dobInput = document.getElementById('birthday');
+  nameInput.addEventListener('input', () => { localStorage.setItem('savedName', nameInput.value); });
+  dobInput.addEventListener('input', () => { localStorage.setItem('savedDob', dobInput.value); });
+  window.addEventListener('load', () => {
+    if (localStorage.getItem('savedName')) nameInput.value = localStorage.getItem('savedName');
+    if (localStorage.getItem('savedDob')) dobInput.value = localStorage.getItem('savedDob');
+  });
+
+  function reduceNumber(n) {
+    while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
+      n = n.toString().split('').reduce((a,b)=>a + (+b),0);
+    }
+    return n;
+  }
+
+  const letterValues = {
+    A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
+    J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
+    S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8
+  };
+
+  function normalizeName(name){
+    return name.normalize("NFD")
+      .replace(/[\u0300-\u036f]/g,"")
+      .replace(/đ/gi,"d")
+      .toUpperCase();
+  }
+
+  function sumDigitsOfNumber(n){ return String(n).replace(/\D/g,'').split('').reduce((a,b)=>a+(+b),0); }
+
+  function nameNumberFull(name){
+    const parts = normalizeName(name).trim().split(/\s+/).filter(Boolean);
+    let partTotals = [];
+    for(let part of parts){
+      let total = 0;
+      for(let ch of part){ if(letterValues[ch]) total += letterValues[ch]; }
+      total = reduceNumber(total);
+      partTotals.push(total);
+    }
+    const grandTotal = partTotals.reduce((a,b)=>a+b,0);
+    return (grandTotal === 11 || grandTotal === 22 || grandTotal === 33)? grandTotal : reduceNumber(grandTotal);
+  }
+
+  function lifePathNumber(dateStr){
+    const [y,m,d] = dateStr.split('-');
+    const total = sumDigitsOfNumber(y) + sumDigitsOfNumber(m) + sumDigitsOfNumber(d);
+    return reduceNumber(total);
+  }
+
+  function birthdayNumber(dateStr){ const day = dateStr.split('-')[2]; return reduceNumber(sumDigitsOfNumber(day)); }
+  function destinyNumber(name){ return nameNumberFull(name); }
+  function soulUrgeNumber(name){ const vowels = normalizeName(name).replace(/[^AEIOUY]/g,' '); return nameNumberFull(vowels); }
+  function personalityNumber(name){ const consonants = normalizeName(name).replace(/[AEIOUY]/g,' '); return nameNumberFull(consonants); }
+  function maturityNumber(lifePath, destiny){ return reduceNumber(lifePath + destiny); }
+  function balanceNumber(name){ const initials = name.trim().split(/\s+/).map(w=>w[0]||'').join(''); return nameNumberFull(initials); }
+  function lifeCycle1(dateStr){ return reduceNumber(sumDigitsOfNumber(dateStr.split('-')[1])); }
+  function lifeCycle2(dateStr){ return reduceNumber(sumDigitsOfNumber(dateStr.split('-')[2])); }
+  function lifeCycle3(dateStr){ return reduceNumber(sumDigitsOfNumber(dateStr.split('-')[0])); }
+  function personalYear(birthday){ const now = new Date(); const [y,m,d] = birthday.split('-').map(Number); const total = sumDigitsOfNumber(d) + sumDigitsOfNumber(m) + sumDigitsOfNumber(now.getFullYear()); return reduceNumber(total); }
+  function personalMonth(birthday){ return reduceNumber(personalYear(birthday) + sumDigitsOfNumber(new Date().getMonth()+1)); }
+  function personalDay(birthday){ return reduceNumber(personalMonth(birthday) + sumDigitsOfNumber(new Date().getDate())); }
+
+  function karmicLessons(name){
+    const letters = normalizeName(name).replace(/[^A-Z]/g,'').split('');
+    const missing=[];
+    for(let ch in letterValues){ if(!letters.includes(ch)) missing.push(letterValues[ch]); }
+    return [...new Set(missing)].sort((a,b)=>a-b);
+  }
+
+  function hiddenPassion(name){
+    const letters = normalizeName(name).replace(/[^A-Z]/g,'').split('');
+    const counts={};
+    letters.forEach(ch=>{ const v=letterValues[ch]; counts[v]=(counts[v]||0)+1; });
+    const max=Math.max(...Object.values(counts));
+    return Object.keys(counts).filter(k=>counts[k]===max).map(Number);
+  }
+
+  function expressionNumber(name){ return nameNumberFull(name); }
+  function intuitionNumber(name){ return reduceNumber(normalizeName(name).replace(/[^A-Z]/g,'').length); }
+  function attitudeNumber(dateStr){ const [y,m,d]=dateStr.split('-').map(Number); return reduceNumber(sumDigitsOfNumber(m)+sumDigitsOfNumber(d)); }
+  function lifePurposeNumber(lp, dest){ return reduceNumber(lp + dest); }
+  function spiritualGrowthNumber(name,birthday){ return reduceNumber(destinyNumber(name) + lifePathNumber(birthday)); }
+  function missionNumber(name,birthday){ return reduceNumber(nameNumberFull(name) + lifePathNumber(birthday)); }
+  function personalitySymbol(name){ const first=normalizeName(name).trim()[0]||'A'; return reduceNumber(letterValues[first]||1); }
+
+  function showTable(label, val) {
+  const isMaster = [11, 22, 33].includes(val) ? 'master' : 'number';
+  return `<tr>
+            <td>${label}</td>
+            <td class="${isMaster}">${val}</td>
+          </tr>`;
+}  
+  function escapeHtml(str){ return str.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+  let barChart, radarChart;
+
+  function calculateAll(){
+    const name=document.getElementById('fullname').value.trim();
+    const birthday=document.getElementById('birthday').value;
+    if(!name||!birthday){ alert("⚠️ Vui lòng nhập đầy đủ họ tên và ngày sinh!"); return; }
+
+    const lifePath=lifePathNumber(birthday);
+    const birthNum=birthdayNumber(birthday);
+    const destiny=destinyNumber(name);
+    const soulUrge=soulUrgeNumber(name);
+    const personality=personalityNumber(name);
+    const maturity=maturityNumber(lifePath,destiny);
+    const balance=balanceNumber(name);
+    const lc1=lifeCycle1(birthday);
+    const lc2=lifeCycle2(birthday);
+    const lc3=lifeCycle3(birthday);
+    const pYear=personalYear(birthday);
+    const pMonth=personalMonth(birthday);
+    const pDay=personalDay(birthday);
+    const karmic=karmicLessons(name);
+    const hidden=hiddenPassion(name);
+    const expr=expressionNumber(name);
+    const intuition=intuitionNumber(name);
+    const attitude=attitudeNumber(birthday);
+    const purpose=lifePurposeNumber(lifePath,destiny);
+    const spiritual=spiritualGrowthNumber(name,birthday);
+    const mission=missionNumber(name,birthday);
+    const symbol=personalitySymbol(name);
+
+    // Khi hiển thị kết quả:
+document.getElementById('result').innerHTML = `
+  <h2>Kết quả 22 chỉ số cho <span style="color:#ffde7b">${escapeHtml(name)}</span></h2>
+  <table id="resultTable">
+    <thead>
+      <tr>
+        <th>Chỉ số</th>
+        <th>Giá trị</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${showTable("1️⃣ Đường đời (Life Path)", lifePath)}
+      ${showTable("2️⃣ Ngày sinh (Birthday)", birthNum)}
+      ${showTable("3️⃣ Sứ mệnh (Destiny)", destiny)}
+      ${showTable("4️⃣ Linh hồn (Soul Urge)", soulUrge)}
+      ${showTable("5️⃣ Nhân cách (Personality)", personality)}
+      ${showTable("6️⃣ Trưởng thành (Maturity)", maturity)}
+      ${showTable("7️⃣ Cân bằng (Balance)", balance)}
+      ${showTable("8️⃣ Chu kỳ 1 (Cycle 1)", lc1)}
+      ${showTable("9️⃣ Chu kỳ 2 (Cycle 2)", lc2)}
+      ${showTable("🔟 Chu kỳ 3 (Cycle 3)", lc3)}
+      ${showTable("1️⃣1️⃣ Năm cá nhân (Personal Year)", pYear)}
+      ${showTable("1️⃣2️⃣ Tháng cá nhân (Personal Month)", pMonth)}
+      ${showTable("1️⃣3️⃣ Ngày cá nhân (Personal Day)", pDay)}
+      ${showTable("1️⃣4️⃣ Bài học tiềm ẩn (Karmic Lessons)", karmic.join(', ') || 'Không có')}
+      ${showTable("1️⃣5️⃣ Sức mạnh tiềm ẩn (Hidden Passion)", hidden.join(', '))}
+      ${showTable("1️⃣6️⃣ Biểu đạt (Expression)", expr)}
+      ${showTable("1️⃣7️⃣ Trực giác (Intuition)", intuition)}
+      ${showTable("1️⃣8️⃣ Thái độ (Attitude)", attitude)}
+      ${showTable("1️⃣9️⃣ Vận mệnh (Life Purpose)", purpose)}
+      ${showTable("2️⃣0️⃣ Tâm linh (Spiritual Growth)", spiritual)}
+      ${showTable("2️⃣1️⃣ Nhiệm vụ (Mission)", mission)}
+      ${showTable("2️⃣2️⃣ Biểu tượng cá nhân (Symbol)", symbol)}
+    </tbody>
+  </table>
+`;
+    // ======== TẠO BIỂU ĐỒ SAU KHI TÍNH ========
+const labels = [
+  "Đường đời",          // Life Path
+  "Ngày sinh",          // Birthday
+  "Sứ mệnh",            // Destiny
+  "Linh hồn",           // Soul Urge
+  "Nhân cách",          // Personality
+  "Trưởng thành",       // Maturity
+  "Cân bằng",           // Balance
+  "Chu kỳ 1",           // Cycle1
+  "Chu kỳ 2",           // Cycle2
+  "Chu kỳ 3",           // Cycle3
+  "Năm cá nhân",        // PersonalYear
+  "Tháng cá nhân",      // PersonalMonth
+  "Ngày cá nhân",       // PersonalDay
+  "Bài học tiềm ẩn",    // HiddenPassion (hoặc Karmic Lessons)
+  "Biểu đạt",           // Expression
+  "Trực giác",          // Intuition
+  "Thái độ",            // Attitude
+  "Vận mệnh",           // Life Purpose
+  "Tâm linh",           // Spiritual
+  "Nhiệm vụ",           // Mission
+  "Biểu tượng cá nhân"  // Symbol
+];
+    const values = [
+      lifePath,birthNum,destiny,soulUrge,personality,
+      maturity,balance,lc1,lc2,lc3,
+      pYear,pMonth,pDay,hidden[0]||0,
+      expr,intuition,attitude,purpose,
+      spiritual,mission,symbol
+    ];
+
+    document.getElementById('charts').style.display='block';
+    if(barChart) barChart.destroy();
+    if(radarChart) radarChart.destroy();
+//================================================================================//
+//================================================================================//
+//================================================================================//
+
+    // ===== Biểu đồ cột =====
+    const barCtx=document.getElementById('barChart').getContext('2d');
+    barChart=new Chart(barCtx,{
+      type:'bar',
+      data:{ labels, datasets:[{ label:'Giá trị 22 chỉ số', data:values, backgroundColor:'rgba(52,152,219,0.7)', borderColor:'#2980b9', borderWidth:1 }]},
+      options: {
+  responsive: true,
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        color: '#fff',
+        font: {
+          size: 18,       // 👈 tăng cỡ chữ trục Y
+          weight: 'bold'
+        }
+      },
+      grid: {
+        color: 'rgba(255,255,255,0.1)'
+      }
+    },
+    x: {
+      ticks: {
+        color: '#fff',
+        font: {
+          size: 18,       // 👈 tăng cỡ chữ trục X
+          weight: 'bold'
+        }
+      },
+      grid: {
+        color: 'rgba(255,255,255,0.1)'
+      }
+    }
+  },
+  plugins: {
+    legend: {
+      labels: {
+        color: '#fff',
+        font: {
+          size: 18,       // 👈 tăng cỡ chữ của chú thích
+          weight: 'bold'
+        }
+      }
+    },
+    title: {
+      display: true,
+      text: 'Biểu đồ 22 Chỉ Số Thần Số Học',
+      color: '#fff',
+      font: {
+        size: 20,         // 👈 cỡ chữ tiêu đề
+        weight: 'bold'
+      },
+      padding: {
+        top: 20,        // 👈 tăng khoảng cách phía trên
+        bottom: 20,     // 👈 tăng khoảng cách phía dưới
+      }
+    }
+  }
+}
+    });
+//================================================================================//
+//================================================================================//
+//================================================================================//
+//================================================================================//
+
+    // ===== Biểu đồ radar =====
+    const radarCtx=document.getElementById('radarChart').getContext('2d');
+    const gradient=radarCtx.createLinearGradient(0,0,0,400);
+    gradient.addColorStop(0,'#74ebd5');
+    gradient.addColorStop(1,'#ACB6E5');
+
+    radarChart=new Chart(radarCtx,{
+                                     type:'radar',
+                                     data:{ labels, datasets:[{ label:'22 chỉ số', data:values, borderColor:'#fff', borderWidth:2, backgroundColor:gradient, pointBackgroundColor:'#ff4757', pointBorderColor:'#fff' }]},
+            
+      options:{responsive:true,aspectRatio: 1,scales:{  r:{ suggestedMin:0, suggestedMax:22, grid:{color:'rgba(255,255,255,0.3)'}, angleLines:{color:'rgba(255,255,255,0.3)'}, pointLabels:{color:'#fff',font: {size: 20,        // 👈 chỉnh kích thước chữ ở đây (mặc định khoảng 10–12)weight: 'bold'   // có thể thêm đậm cho dễ đọc
+ <!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tính 22 Chỉ Số Thần Số Học (Chuẩn hóa họ tên & ngày sinh)</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-image: url('https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/474095zRS/hinh-anh-bien-nang-ngay-he_044800126.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      padding: 30px;
+    }
+    
+    .box {
+  
+  border: 10px solid gold;      /* 👈 viền vàng */
+  border-radius: 16px;
+  padding: 30px 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  left: 400px;
+   }
+  
+    h1 { color: #333; text-shadow: 1px 1px 3px #000; }
+    input, button {
+      padding: 8px; margin: 6px 0; width: 100%; max-width: 360px;
+      border-radius: 6px; border: none;
+    }
+    
+    label {color: #333; font-size: 15px;}
+    
+    button {
+      background: #3498db; 
+      color: #fff; 
+      cursor: pointer; 
+      font-size: 25px;
+      width: 150px ;
+      height: 80px ;
+      font-weight: bold;   /* đậm */
+      font-style: italic;  /* nghiêng */
+      border-radius: 30px;
+      border: 5px solid #333;
+    }
+    
+    button:hover { background: #2980b9; }
+    
+    #resultTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 20px;
+}
+
+#resultTable th, #resultTable td {
+  border: 1px solid #fff;     /* viền trắng */
+  padding: 8px 12px;
+  text-align: left;
+}
+
+#resultTable th {
+  background-color: rgba(255, 215, 0, 0.3); /* vàng nhạt cho header */
+}
+
+#resultTable td.number {
+  font-weight: bold;
+  font-size: 18px;
+  color: #ffde7b;   /* số bình thường */
+}
+
+#resultTable td.master {
+  font-weight: bold;
+  color: #ff4b2b;   /* số 11,22,33 nổi bật */
+  text-shadow: 0 0 5px #ffcc33;
+  font-size: 25px;
+}
+
+    
+    
+    
+    .result {
+      background: rgba(0,0,0,0.6);
+      margin-top: 20px; padding: 18px; border-radius: 10px;
+    }
+    
+   
+
+
+    
+    
+    .chart-section {
+      background: rgba(0,0,0,0.6);
+      border-radius: 12px; padding: 16px; margin-top: 24px;
+    }
+    
+    #radarChart {
+  width: 800px !important;
+  height: 600px !important;
+  max-width: 100%;
+  
+  display: block;
+  margin: 20px auto;
+}
+
+
+.input-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 20px;               /* khoảng cách giữa 2 cột */
+  margin-bottom: 20px;
+  flex-wrap: wrap;         /* để không bị vỡ trên màn hình nhỏ */
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.input-group label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #8b0000;
+}
+
+.input-group input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ff6666;
+  background: #fff5f5;
+  width: 200px;            /* 👈 chỉnh độ rộng mỗi ô */
+}
+
+
+#barChart {
+  max-width: 600px;   /* 👈 Giới hạn chiều rộng tối đa */
+  max-height: 400px;  /* 👈 Giới hạn chiều cao tối đa */
+  margin: 0 auto;     /* 👈 Căn giữa */
+  display: block;
+}
+    canvas { width: 500 !important; height: 380px !important; }  
+    
+    </style>
+</head>
+<body>
+
+  <div class="box">
+  <h1>🔮 Tính 22 Chỉ Số Thần Số Học</h1>
+
+  <!-- Khối chứa tên + ngày sinh trên cùng 1 hàng -->
+  <div class="input-row">
+    <div class="input-group">
+      <label>Họ và tên:</label>
+      <input type="text" id="fullname" placeholder="Ví dụ: Đặng Mạnh Hùng">
+    </div>
+
+    <div class="input-group">
+      <label>Ngày sinh:</label>
+      <input type="date" id="birthday">
+    </div>
+  </div>
+
+  <button onclick="calculateAll()">Tính toán 22 chỉ số</button>
+</div>
+    <div id="result" class="result"></div>
+  
+  <!-- Nơi để chèn biểu đồ -->
+  <div id="charts" class="chart-section" style="display:none;">
+    <h2>📊 Biểu đồ 22 chỉ số</h2>
+    <canvas id="barChart" width="400" height="300"></canvas>
+    <canvas id="radarChart" style="margin-top:30px;"></canvas>
+  </div>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+  // ========== Phần cũ của bạn giữ nguyên hoàn toàn ==========
+  const nameInput = document.getElementById('fullname');
+  const dobInput = document.getElementById('birthday');
+  nameInput.addEventListener('input', () => { localStorage.setItem('savedName', nameInput.value); });
+  dobInput.addEventListener('input', () => { localStorage.setItem('savedDob', dobInput.value); });
+  window.addEventListener('load', () => {
+    if (localStorage.getItem('savedName')) nameInput.value = localStorage.getItem('savedName');
+    if (localStorage.getItem('savedDob')) dobInput.value = localStorage.getItem('savedDob');
+  });
+
+  function reduceNumber(n) {
+    while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
+      n = n.toString().split('').reduce((a,b)=>a + (+b),0);
+    }
+    return n;
+  }
+
+  const letterValues = {
+    A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
+    J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
+    S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8
+  };
+
+  function normalizeName(name){
+    return name.normalize("NFD")
+      .replace(/[\u0300-\u036f]/g,"")
+      .replace(/đ/gi,"d")
+      .toUpperCase();
+  }
+
+  function sumDigitsOfNumber(n){ return String(n).replace(/\D/g,'').split('').reduce((a,b)=>a+(+b),0); }
+
+  function nameNumberFull(name){
+    const parts = normalizeName(name).trim().split(/\s+/).filter(Boolean);
+    let partTotals = [];
+    for(let part of parts){
+      let total = 0;
+      for(let ch of part){ if(letterValues[ch]) total += letterValues[ch]; }
+      total = reduceNumber(total);
+      partTotals.push(total);
+    }
+    const grandTotal = partTotals.reduce((a,b)=>a+b,0);
+    return (grandTotal === 11 || grandTotal === 22 || grandTotal === 33)? grandTotal : reduceNumber(grandTotal);
+  }
+
+  function lifePathNumber(dateStr){
+    const [y,m,d] = dateStr.split('-');
+    const total = sumDigitsOfNumber(y) + sumDigitsOfNumber(m) + sumDigitsOfNumber(d);
+    return reduceNumber(total);
+  }
+
+  function birthdayNumber(dateStr){ const day = dateStr.split('-')[2]; return reduceNumber(sumDigitsOfNumber(day)); }
+  function destinyNumber(name){ return nameNumberFull(name); }
+  function soulUrgeNumber(name){ const vowels = normalizeName(name).replace(/[^AEIOUY]/g,' '); return nameNumberFull(vowels); }
+  function personalityNumber(name){ const consonants = normalizeName(name).replace(/[AEIOUY]/g,' '); return nameNumberFull(consonants); }
+  function maturityNumber(lifePath, destiny){ return reduceNumber(lifePath + destiny); }
+  function balanceNumber(name){ const initials = name.trim().split(/\s+/).map(w=>w[0]||'').join(''); return nameNumberFull(initials); }
+  function lifeCycle1(dateStr){ return reduceNumber(sumDigitsOfNumber(dateStr.split('-')[1])); }
+  function lifeCycle2(dateStr){ return reduceNumber(sumDigitsOfNumber(dateStr.split('-')[2])); }
+  function lifeCycle3(dateStr){ return reduceNumber(sumDigitsOfNumber(dateStr.split('-')[0])); }
+  function personalYear(birthday){ const now = new Date(); const [y,m,d] = birthday.split('-').map(Number); const total = sumDigitsOfNumber(d) + sumDigitsOfNumber(m) + sumDigitsOfNumber(now.getFullYear()); return reduceNumber(total); }
+  function personalMonth(birthday){ return reduceNumber(personalYear(birthday) + sumDigitsOfNumber(new Date().getMonth()+1)); }
+  function personalDay(birthday){ return reduceNumber(personalMonth(birthday) + sumDigitsOfNumber(new Date().getDate())); }
+
+  function karmicLessons(name){
+    const letters = normalizeName(name).replace(/[^A-Z]/g,'').split('');
+    const missing=[];
+    for(let ch in letterValues){ if(!letters.includes(ch)) missing.push(letterValues[ch]); }
+    return [...new Set(missing)].sort((a,b)=>a-b);
+  }
+
+  function hiddenPassion(name){
+    const letters = normalizeName(name).replace(/[^A-Z]/g,'').split('');
+    const counts={};
+    letters.forEach(ch=>{ const v=letterValues[ch]; counts[v]=(counts[v]||0)+1; });
+    const max=Math.max(...Object.values(counts));
+    return Object.keys(counts).filter(k=>counts[k]===max).map(Number);
+  }
+
+  function expressionNumber(name){ return nameNumberFull(name); }
+  function intuitionNumber(name){ return reduceNumber(normalizeName(name).replace(/[^A-Z]/g,'').length); }
+  function attitudeNumber(dateStr){ const [y,m,d]=dateStr.split('-').map(Number); return reduceNumber(sumDigitsOfNumber(m)+sumDigitsOfNumber(d)); }
+  function lifePurposeNumber(lp, dest){ return reduceNumber(lp + dest); }
+  function spiritualGrowthNumber(name,birthday){ return reduceNumber(destinyNumber(name) + lifePathNumber(birthday)); }
+  function missionNumber(name,birthday){ return reduceNumber(nameNumberFull(name) + lifePathNumber(birthday)); }
+  function personalitySymbol(name){ const first=normalizeName(name).trim()[0]||'A'; return reduceNumber(letterValues[first]||1); }
+
+  function showTable(label, val) {
+  const isMaster = [11, 22, 33].includes(val) ? 'master' : 'number';
+  return `<tr>
+            <td>${label}</td>
+            <td class="${isMaster}">${val}</td>
+          </tr>`;
+}  
+  function escapeHtml(str){ return str.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+  let barChart, radarChart;
+
+  function calculateAll(){
+    const name=document.getElementById('fullname').value.trim();
+    const birthday=document.getElementById('birthday').value;
+    // Vẽ tháp Pinnacle
+    drawPyramidChart(birthday);
+    if(!name||!birthday){ alert("⚠️ Vui lòng nhập đầy đủ họ tên và ngày sinh!"); return; }
+
+    const lifePath=lifePathNumber(birthday);
+    const birthNum=birthdayNumber(birthday);
+    const destiny=destinyNumber(name);
+    const soulUrge=soulUrgeNumber(name);
+    const personality=personalityNumber(name);
+    const maturity=maturityNumber(lifePath,destiny);
+    const balance=balanceNumber(name);
+    const lc1=lifeCycle1(birthday);
+    const lc2=lifeCycle2(birthday);
+    const lc3=lifeCycle3(birthday);
+    const pYear=personalYear(birthday);
+    const pMonth=personalMonth(birthday);
+    const pDay=personalDay(birthday);
+    const karmic=karmicLessons(name);
+    const hidden=hiddenPassion(name);
+    const expr=expressionNumber(name);
+    const intuition=intuitionNumber(name);
+    const attitude=attitudeNumber(birthday);
+    const purpose=lifePurposeNumber(lifePath,destiny);
+    const spiritual=spiritualGrowthNumber(name,birthday);
+    const mission=missionNumber(name,birthday);
+    const symbol=personalitySymbol(name);
+
+    // Khi hiển thị kết quả:
+document.getElementById('result').innerHTML = `
+  <h2>Kết quả 22 chỉ số cho <span style="color:#ffde7b">${escapeHtml(name)}</span></h2>
+  <table id="resultTable">
+    <thead>
+      <tr>
+        <th>Chỉ số</th>
+        <th>Giá trị</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${showTable("1️⃣ Đường đời (Life Path)", lifePath)}
+      ${showTable("2️⃣ Ngày sinh (Birthday)", birthNum)}
+      ${showTable("3️⃣ Sứ mệnh (Destiny)", destiny)}
+      ${showTable("4️⃣ Linh hồn (Soul Urge)", soulUrge)}
+      ${showTable("5️⃣ Nhân cách (Personality)", personality)}
+      ${showTable("6️⃣ Trưởng thành (Maturity)", maturity)}
+      ${showTable("7️⃣ Cân bằng (Balance)", balance)}
+      ${showTable("8️⃣ Chu kỳ 1 (Cycle 1)", lc1)}
+      ${showTable("9️⃣ Chu kỳ 2 (Cycle 2)", lc2)}
+      ${showTable("🔟 Chu kỳ 3 (Cycle 3)", lc3)}
+      ${showTable("1️⃣1️⃣ Năm cá nhân (Personal Year)", pYear)}
+      ${showTable("1️⃣2️⃣ Tháng cá nhân (Personal Month)", pMonth)}
+      ${showTable("1️⃣3️⃣ Ngày cá nhân (Personal Day)", pDay)}
+      ${showTable("1️⃣4️⃣ Bài học tiềm ẩn (Karmic Lessons)", karmic.join(', ') || 'Không có')}
+      ${showTable("1️⃣5️⃣ Sức mạnh tiềm ẩn (Hidden Passion)", hidden.join(', '))}
+      ${showTable("1️⃣6️⃣ Biểu đạt (Expression)", expr)}
+      ${showTable("1️⃣7️⃣ Trực giác (Intuition)", intuition)}
+      ${showTable("1️⃣8️⃣ Thái độ (Attitude)", attitude)}
+      ${showTable("1️⃣9️⃣ Vận mệnh (Life Purpose)", purpose)}
+      ${showTable("2️⃣0️⃣ Tâm linh (Spiritual Growth)", spiritual)}
+      ${showTable("2️⃣1️⃣ Nhiệm vụ (Mission)", mission)}
+      ${showTable("2️⃣2️⃣ Biểu tượng cá nhân (Symbol)", symbol)}
+    </tbody>
+  </table>
+`;
+    // ======== TẠO BIỂU ĐỒ SAU KHI TÍNH ========
+const labels = [
+  "Đường đời",          // Life Path
+  "Ngày sinh",          // Birthday
+  "Sứ mệnh",            // Destiny
+  "Linh hồn",           // Soul Urge
+  "Nhân cách",          // Personality
+  "Trưởng thành",       // Maturity
+  "Cân bằng",           // Balance
+  "Chu kỳ 1",           // Cycle1
+  "Chu kỳ 2",           // Cycle2
+  "Chu kỳ 3",           // Cycle3
+  "Năm cá nhân",        // PersonalYear
+  "Tháng cá nhân",      // PersonalMonth
+  "Ngày cá nhân",       // PersonalDay
+  "Bài học tiềm ẩn",    // HiddenPassion (hoặc Karmic Lessons)
+  "Biểu đạt",           // Expression
+  "Trực giác",          // Intuition
+  "Thái độ",            // Attitude
+  "Vận mệnh",           // Life Purpose
+  "Tâm linh",           // Spiritual
+  "Nhiệm vụ",           // Mission
+  "Biểu tượng cá nhân"  // Symbol
+];
+    const values = [
+      lifePath,birthNum,destiny,soulUrge,personality,
+      maturity,balance,lc1,lc2,lc3,
+      pYear,pMonth,pDay,hidden[0]||0,
+      expr,intuition,attitude,purpose,
+      spiritual,mission,symbol
+    ];
+
+    document.getElementById('charts').style.display='block';
+    if(barChart) barChart.destroy();
+    if(radarChart) radarChart.destroy();
+
+    // ===== Biểu đồ cột =====
+    const barCtx=document.getElementById('barChart').getContext('2d');
+    barChart=new Chart(barCtx,{
+      type:'bar',
+      data:{ labels, datasets:[{ label:'Giá trị 22 chỉ số', data:values, backgroundColor:'rgba(52,152,219,0.7)', borderColor:'#2980b9', borderWidth:1 }]},
+      options: {
+  responsive: true,
+  scales: {
+    y: {
+      beginAtZero: true,
+      ticks: {
+        color: '#fff',
+        font: {
+          size: 18,       // 👈 tăng cỡ chữ trục Y
+          weight: 'bold'
+        }
+      },
+      grid: {
+        color: 'rgba(255,255,255,0.1)'
+      }
+    },
+    x: {
+      ticks: {
+        color: '#fff',
+        font: {
+          size: 18,       // 👈 tăng cỡ chữ trục X
+          weight: 'bold'
+        }
+      },
+      grid: {
+        color: 'rgba(255,255,255,0.1)'
+      }
+    }
+  },
+  plugins: {
+    legend: {
+      labels: {
+        color: '#fff',
+        font: {
+          size: 18,       // 👈 tăng cỡ chữ của chú thích
+          weight: 'bold'
+        }
+      }
+    },
+    title: {
+      display: true,
+      text: 'Biểu đồ 22 Chỉ Số Thần Số Học',
+      color: '#fff',
+      font: {
+        size: 20,         // 👈 cỡ chữ tiêu đề
+        weight: 'bold'
+      },
+      padding: {
+        top: 20,        // 👈 tăng khoảng cách phía trên
+        bottom: 20,     // 👈 tăng khoảng cách phía dưới
+      }
+    }
+  }
+}
+    });
+
+    // ===== Biểu đồ radar =====
+    const radarCtx=document.getElementById('radarChart').getContext('2d');
+    const gradient=radarCtx.createLinearGradient(0,0,0,400);
+    gradient.addColorStop(0,'#74ebd5');
+    gradient.addColorStop(1,'#ACB6E5');
+
+    radarChart=new Chart(radarCtx,{
+      type:'radar',
+      data:{ labels, datasets:[{ label:'22 chỉ số', 
+      data:values, 
+      borderColor:'#fff', 
+      borderWidth:2, 
+      backgroundColor:gradient, 
+      pointBackgroundColor:'#ff4757', 
+      pointBorderColor:'#fff' }]},
+      options:{
+        responsive:true,
+        aspectRatio: 1,
+        scales:{ 
+                  r:{ 
+                           suggestedMin:0, 
+                           suggestedMax:22, 
+                           grid:{color:'rgba(255,255,255,0.3)'}, 
+                           angleLines:{color:'rgba(255,255,255,0.3)'}, 
+                           pointLabels:{
+                                          color:'#fff',
+                                          font: {
+                                                  size: 20,        // 👈 chỉnh kích thước chữ ở đây (mặc định khoảng 10–12)
+                                                   weight: 'bold'   // có thể thêm đậm cho dễ đọc
+                                                 }
+                                        }, 
+                           ticks:{
+                                   color:'#fff', 
+                                   backdropColor:'transparent'
+                                  } 
+                       } 
+                  },
+        plugins:{ legend:{ labels:{color:'#fff'} } }
+      }
+    });
+  }
+
+// ================= THÁP THẦN SỐ HỌC 9 NĂM =======================
+function calcPyramidNumbers(birthday) {
+  const [year, month, day] = birthday.split('-').map(Number);
+  const lifePath = lifePathNumber(birthday);
+  const birthNum = birthdayNumber(birthday);
+
+  // 4 đỉnh tháp chính (Pinnacle Numbers)
+  const pinnacle1 = reduceNumber(month + day);
+  const pinnacle2 = reduceNumber(day + year);
+  const pinnacle3 = reduceNumber(pinnacle1 + pinnacle2);
+  const pinnacle4 = reduceNumber(month + year);
+
+  // 4 chu kỳ tuổi tương ứng
+  const start1 = 0;
+  const start2 = 36 - lifePath;
+  const start3 = start2 + 9;
+  const start4 = start3 + 9;
+
+  return [
+    { phase: 1, from: start1, to: start2 - 1, number: pinnacle1 },
+    { phase: 2, from: start2, to: start3 - 1, number: pinnacle2 },
+    { phase: 3, from: start3, to: start4 - 1, number: pinnacle3 },
+    { phase: 4, from: start4, to: start4 + 9, number: pinnacle4 },
+  ];
+}
+
+// Hàm xóa tháp cũ nếu có
+function removeOldPyramid() {
+    const old = document.querySelector(".pyramid-container");
+    if (old) old.remove();
+}
+
+// Hàm vẽ tháp ra màn hình
+function drawPyramidChart(birthday) {
+removeOldPyramid(); // <-- Gọi xóa trước khi vẽ mới
+  const data = calcPyramidNumbers(birthday);
+  const container = document.createElement("div");
+  container.className = "pyramid-container";
+  container.innerHTML = `
+    <h2>🗿 Tháp Thần Số Học (Pinnacle Chart)</h2>
+    <div class="pyramid">
+      <div class="level level1">${data[0].number}</div>
+      <div class="level level2">
+        <span>${data[1].number}</span><span>${data[2].number}</span>
+      </div>
+      <div class="level level3">${data[3].number}</div>
+    </div>
+    <table class="pyramid-table">
+      <tr><th>Giai đoạn</th><th>Độ tuổi</th><th>Đỉnh</th></tr>
+      ${data.map(p => `
+        <tr>
+          <td>Chu kỳ ${p.phase}</td>
+          <td>${p.from} – ${p.to}</td>
+          <td>${p.number}</td>
+        </tr>`).join('')}
+    </table>
+  `;
+  document.body.appendChild(container);
+}
+
+
+
+  </script>
+</body>
+</html>
+
+
+
+
