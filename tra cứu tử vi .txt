@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PHONG THỦY TOÀN DIỆN V15 - FULL LOGIC</title>
+    <style>
+        :root {
+            --bg: #05070a; --card: #0d1117; --cyan: #00f2ff;
+            --pink: #ff007f; --yellow: #f3ce32; --red: #ff4d4d;
+            --green: #2ecc71; --text: #c9d1d9; --border: #30363d;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text);
+            margin: 30px 3px 100px 3px; /* Layout chuẩn 3 mép */
+        }
+        .container { max-width: 600px; margin: 0 auto; }
+        
+        .search-box {
+            position: sticky; top: 10px; z-index: 100;
+            background: var(--card); padding: 12px; border-radius: 12px;
+            border: 1px solid var(--cyan); margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+        }
+        input[list] {
+            width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border);
+            background: #000; color: #fff; font-size: 1rem; outline: none;
+        }
+
+        .card {
+            background: var(--card); border-radius: 12px; padding: 18px;
+            border: 1px solid var(--border); margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.05);
+            display: none;
+        }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .title { font-size: 1.4rem; font-weight: 900; color: #fff; text-shadow: 0 0 10px var(--cyan); }
+        .nap-am { color: var(--cyan); font-weight: bold; font-size: 0.95rem; display: block; margin-top: 4px; }
+        
+        .gender-select { display: flex; gap: 8px; margin: 10px 0; }
+        .gender-btn { 
+            flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border); 
+            background: #161b22; color: var(--text); font-size: 0.8rem; font-weight: bold; cursor: pointer;
+        }
+        .gender-btn.active-nam { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
+        .gender-btn.active-nu { border-color: var(--pink); color: var(--pink); box-shadow: 0 0 10px rgba(255, 0, 127, 0.2); }
+
+        .logic-section { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 15px; }
+        .box { padding: 12px; border-radius: 8px; font-size: 0.85rem; background: rgba(255,255,255,0.02); border-left: 4px solid; line-height: 1.5; }
+        .b-good { border-color: var(--green); }
+        .b-warn { border-color: var(--yellow); }
+        .b-bad { border-color: var(--red); }
+        .b-info { border-color: var(--cyan); background: rgba(0, 242, 255, 0.03); }
+        
+        .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 6px; opacity: 0.9; letter-spacing: 1px; }
+        .reason { font-size: 0.78rem; color: #c9d1d9; display: block; margin-top: 4px; line-height: 1.4; }
+        .app-note { font-size: 0.75rem; color: var(--yellow); font-style: italic; margin-top: 5px; display: block; border-top: 1px solid #222; padding-top: 4px; }
+
+        .cung-item { font-size: 0.75rem; border-bottom: 1px solid #222; padding: 6px 0; }
+        .txt-green { color: var(--green); }
+        .txt-red { color: var(--red); }
+        textarea { width: 100%; height: 60px; background: #000; color: var(--cyan); border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="search-box">
+        <input list="list-tuoi" id="input-search" placeholder="Gõ năm hoặc tên tuổi..." oninput="checkSelect()" inputmode="text">
+        <datalist id="list-tuoi"></datalist>
+    </div>
+    <div id="app"></div>
+</div>
+
+<script>
+    const cans = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
+    const chis = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
+    const napAmFull = { "Giáp Tý": "Hải Trung Kim", "Ất Sửu": "Hải Trung Kim", "Bính Dần": "Lư Trung Hỏa", "Đinh Mão": "Lư Trung Hỏa", "Mậu Thìn": "Đại Lâm Mộc", "Kỷ Tỵ": "Đại Lâm Mộc", "Canh Ngọ": "Lộ Bàng Thổ", "Tân Mùi": "Lộ Bàng Thổ", "Nhâm Thân": "Kiếm Phong Kim", "Quý Dậu": "Kiếm Phong Kim", "Giáp Tuất": "Sơn Đầu Hỏa", "Ất Hợi": "Sơn Đầu Hỏa", "Bính Tý": "Giản Hạ Thủy", "Đinh Sửu": "Giản Hạ Thủy", "Mậu Dần": "Thành Đầu Thổ", "Kỷ Mão": "Thành Đầu Thổ", "Canh Thìn": "Bạch Lạp Kim", "Tân Tỵ": "Bạch Lạp Kim", "Nhâm Ngọ": "Dương Liễu Mộc", "Quý Mùi": "Dương Liễu Mộc", "Giáp Thân": "Tuyền Trung Thủy", "Ất Dậu": "Tuyền Trung Thủy", "Bính Tuất": "Ốc Thượng Thổ", "Đinh Hợi": "Ốc Thượng Thổ", "Mậu Tý": "Thích Lịch Hỏa", "Kỷ Sửu": "Thích Lịch Hỏa", "Canh Dần": "Tùng Bách Mộc", "Tân Mão": "Tùng Bách Mộc", "Nhâm Thìn": "Trường Lưu Thủy", "Quý Tỵ": "Trường Lưu Thủy", "Giáp Ngọ": "Sa Trung Kim", "Ất Mùi": "Sa Trung Kim", "Bính Thân": "Sơn Hạ Hỏa", "Đinh Dậu": "Sơn Hạ Hỏa", "Mậu Tuất": "Bình Địa Mộc", "Kỷ Hợi": "Bình Địa Mộc", "Canh Tý": "Bích Thượng Thổ", "Tân Sửu": "Bích Thượng Thổ", "Nhâm Dần": "Kim Bạch Kim", "Quý Mão": "Kim Bạch Kim", "Giáp Thìn": "Phú Đăng Hỏa", "Ất Tỵ": "Phú Đăng Hỏa", "Bính Ngọ": "Thiên Hà Thủy", "Đinh Mùi": "Thiên Hà Thủy", "Mậu Thân": "Đại Trạch Thổ", "Kỷ Dậu": "Đại Trạch Thổ", "Canh Tuất": "Thoa Xuyến Kim", "Tân Hợi": "Thoa Xuyến Kim", "Nhâm Tý": "Tang Đố Mộc", "Quý Sửu": "Tang Đố Mộc", "Giáp Dần": "Đại Khê Thủy", "Ất Mão": "Đại Khê Thủy", "Bính Thìn": "Sa Trung Thổ", "Đinh Tỵ": "Sa Trung Thổ", "Mậu Ngọ": "Thiên Thượng Hỏa", "Kỷ Mùi": "Thiên Thượng Hỏa", "Canh Thân": "Thạch Lựu Mộc", "Tân Dậu": "Thạch Lựu Mộc", "Nhâm Tuất": "Đại Hải Thủy", "Quý Hợi": "Đại Hải Thủy" };
+    const batTrach = { "Tốn": { "Khảm": ["Sinh Khí", "Tài lộc cực thịnh, con cái thành đạt."], "Chấn": ["Diên Niên", "Gia đạo êm ấm, tình cảm bền vững."], "Ly": ["Thiên Y", "Sức khỏe dồi dào, quý nhân hỗ trợ."], "Tốn": ["Phục Vị", "May mắn, tinh thần bình an."], "Càn": ["Họa Hại", "Thị phi, mất tiền oan vặt."], "Khôn": ["Ngũ Quỷ", "Dễ mất trộm, hỏa hoạn, tai tiếng."], "Đoài": ["Lục Sát", "Kiện tụng, tình cảm nứt vỡ."], "Cấn": ["Tuyệt Mệnh", "Phá sản, bệnh nan y (Đại kỵ)."] }, "Khôn": { "Cấn": ["Sinh Khí", "Phát triển sự nghiệp, con cái giỏi."], "Càn": ["Diên Niên", "Vợ chồng thấu hiểu, sống thọ."], "Đoài": ["Thiên Y", "Gặp thầy gặp thuốc, ít 0m đau."], "Khôn": ["Phục Vị", "Gia đình yên ổn, ít biến động."], "Khảm": ["Tuyệt Mệnh", "Phá sản, hại sức khỏe nghiêm trọng."], "Tốn": ["Ngũ Quỷ", "Bị tiểu nhân chọc phá, mất việc."], "Chấn": ["Họa Hại", "Nói năng gây hiểu lầm, xui xẻo."], "Ly": ["Lục Sát", "Mất ngủ, tâm lý bất an, cãi vã."] }, "Chấn": { "Ly": ["Sinh Khí", "Làm ăn phát đạt, danh tiếng lẫy lừng."], "Tốn": ["Diên Niên", "Quan hệ bạn bè và gia đình rất tốt."], "Khảm": ["Thiên Y", "Trời phú sức khỏe, tai qua nạn khỏi."], "Chấn": ["Phục Vị", "Tự tin, tinh thần vững vàng."], "Đoài": ["Tuyệt Mệnh", "Tai nạn bất ngờ, làm ăn sụp đổ."], "Cấn": ["Lục Sát", "Mang tiếng thị phi, gia đạo xáo trộn."], "Khôn": ["Họa Hại", "Khó tích lũy tiền bạc, mệt mỏi."], "Càn": ["Ngũ Quỷ", "Kiện tụng kéo dài, hỏa hoạn."] }, "Khảm": { "Tốn": ["Sinh Khí", "Giàu sang phú quý, vạn sự như ý."], "Ly": ["Diên Niên", "Tình yêu viên mãn, hạnh phúc bền lâu."], "Chấn": ["Thiên Y", "Gia đình không bệnh tật, có lộc ăn."], "Khảm": ["Phục Vị", "Củng cố sức mạnh tinh thần."], "Khôn": ["Tuyệt Mệnh", "Bệnh tật liên miên, tài sản tiêu tán."], "Cấn": ["Ngũ Quỷ", "Thị phi, mất tiền vì người ngoài."], "Càn": ["Lục Sát", "Vợ chồng hay nghi kỵ, tranh chấp."], "Đoài": ["Họa Hại", "Nội bộ bất hòa, khó làm việc lớn."] }, "Ly": { "Chấn": ["Sinh Khí", "Thăng quan tiến chức, phúc lộc đầy nhà."], "Khảm": ["Diên Niên", "Quan hệ xã giao tốt, tình duyên đẹp."], "Tốn": ["Thiên Y", "Bệnh nặng hóa nhẹ, sống lâu."], "Ly": ["Phục Vị", "Ổn định sự nghiệp, may mắn nhỏ."], "Càn": ["Tuyệt Mệnh", "Tổn thọ, trắng tay nhanh chóng."], "Đoài": ["Ngũ Quỷ", "Gặp họa từ trên trời rơi xuống."], "Khôn": ["Lục Sát", "Kiện cáo, tốn kém tiền bạc."], "Cấn": ["Họa Hại", "Làm nhiều hưởng ít, thị phi."] }, "Cấn": { "Khôn": ["Sinh Khí", "Điền sản dồi dào (đất đai), thành đạt."], "Đoài": ["Diên Niên", "Con cái hiếu thảo, gia đình vui vẻ."], "Càn": ["Thiên Y", "Có quý nhân dẫn đường chỉ lối."], "Cấn": ["Phục Vị", "Bình yên vô sự, vạn sự thuận lợi."], "Khảm": ["Ngũ Quỷ", "Tốn tiền vì kiện tụng, tiểu nhân hại."], "Chấn": ["Lục Sát", "Sát thương tình cảm, hay cãi vã."], "Tốn": ["Tuyệt Mệnh", "Con cái khó nuôi, phá sản."], "Ly": ["Họa Hại", "Mất việc, hay gặp xui xẻo nhỏ."] }, "Càn": { "Đoài": ["Sinh Khí", "Mọi việc hanh thông, lộc lá nhiều."], "Khôn": ["Diên Niên", "Hòa thuận trong ngoài, phúc đức."], "Cấn": ["Thiên Y", "Sức khỏe dồi dào, gặp may mắn."], "Càn": ["Phục Vị", "Sự nghiệp ổn định, được trợ giúp."], "Ly": ["Tuyệt Mệnh", "Hại người hại của, tan vỡ gia đình."], "Chấn": ["Ngũ Quỷ", "Bất hạnh, mất trộm, tai họa."], "Khảm": ["Lục Sát", "Mang tiếng xấu, hay bị vu oan."], "Tốn": ["Họa Hại", "Thất bại trong công việc, mệt mỏi."] }, "Đoài": { "Càn": ["Sinh Khí", "Tài lộc dồi dào, kinh doanh thuận lợi."], "Cấn": ["Diên Niên", "Gia đạo yên vui, bạn bè giúp đỡ."], "Khôn": ["Thiên Y", "Thân thể khỏe mạnh, ít 0m đau."], "Đoài": ["Phục Vị", "Củng cố ý chí, may mắn vây quanh."], "Chấn": ["Tuyệt Mệnh", "Tốn hao tài sản, tai nạn đau thương."], "Ly": ["Ngũ Quỷ", "Dễ bị lừa gạt, mất tiền của."], "Tốn": ["Lục Sát", "Quan hệ bất chính, thị phi lôi kéo."], "Khảm": ["Họa Hại", "Tâm trí rối loạn, khó thành công."] } };
+
+    let currentGender = 0;
+    let selectedYear = null;
+
+    function getCungPhi(year, genderIdx) {
+        let sum = year.toString().split('').reduce((a,b)=>parseInt(a)+parseInt(b),0);
+        while(sum > 9) sum = sum.toString().split('').reduce((a,b)=>parseInt(a)+parseInt(b),0);
+        if(genderIdx === 0) { let r = 11-sum; if(r>9) r-=9; return [null,"Khảm","Khôn","Chấn","Tốn","Khôn","Càn","Đoài","Cấn","Ly"][r]; }
+        else { let r = 4+sum; while(r>9) r-=9; return [null,"Khảm","Khôn","Chấn","Tốn","Cấn","Càn","Đoài","Cấn","Ly"][r]; }
+    }
+
+    function getLogic(can, chi) {
+        const canHop = { "Giáp": "Kỷ", "Ất": "Canh", "Bính": "Tân", "Đinh": "Nhâm", "Mậu": "Quý", "Kỷ": "Giáp", "Canh": "Ất", "Tân": "Bính", "Nhâm": "Đinh", "Quý": "Mậu" };
+        const canXung = { "Giáp": "Canh", "Ất": "Tân", "Bính": "Nhâm", "Đinh": "Quý", "Mậu": "Giáp", "Kỷ": "Ất", "Canh": "Giáp", "Tân": "Ất", "Nhâm": "Bính", "Quý": "Đinh" };
+        const chiTamHop = { "Tý": "Thân, Thìn", "Sửu": "Tỵ, Dậu", "Dần": "Ngọ, Tuất", "Mão": "Hợi, Mùi", "Thìn": "Thân, Tý", "Tỵ": "Sửu, Dậu", "Ngọ": "Dần, Tuất", "Mùi": "Mão, Hợi", "Thân": "Tý, Thìn", "Dậu": "Sửu, Tỵ", "Tuất": "Dần, Ngọ", "Hợi": "Mão, Mùi" };
+        const chiLucHop = { "Tý": "Sửu", "Sửu": "Tý", "Dần": "Hợi", "Mão": "Tuất", "Thìn": "Dậu", "Tỵ": "Thân", "Ngọ": "Mùi", "Mùi": "Ngọ", "Thân": "Tỵ", "Dậu": "Thìn", "Tuất": "Mão", "Hợi": "Dần" };
+        const chiXung = { "Tý": "Ngọ", "Sửu": "Mùi", "Dần": "Thân", "Mão": "Dậu", "Thìn": "Tuất", "Tỵ": "Hợi", "Ngọ": "Tý", "Mùi": "Sửu", "Thân": "Dần", "Dậu": "Mão", "Tuất": "Thìn", "Hợi": "Tỵ" };
+        return { canHop: canHop[can], chiTam: chiTamHop[chi], chiLuc: chiLucHop[chi], canXung: canXung[can], chiXung: chiXung[chi] };
+    }
+
+    function initList() {
+        const list = document.getElementById('list-tuoi');
+        for (let i = 0; i < 70; i++) {
+            let y = 1960 + i;
+            let c = cans[(6+i)%10], h = chis[(0+i)%12];
+            let opt = document.createElement('option');
+            opt.value = `${y} - ${c} ${h}`;
+            list.appendChild(opt);
+        }
+    }
+
+    function checkSelect() {
+        const val = document.getElementById('input-search').value;
+        const match = val.match(/\d{4}/);
+        if (match) {
+            selectedYear = parseInt(match[0]);
+            renderUI(currentGender);
+        }
+    }
+
+    function setGender(g) {
+        currentGender = g;
+        if (selectedYear) renderUI(g);
+    }
+
+    function renderUI(genderIdx) {
+        const app = document.getElementById('app');
+        const offset = selectedYear - 1960;
+        let c = cans[(6+offset)%10], h = chis[(0+offset)%12], name = c + " " + h;
+        let nAm = napAmFull[name] || "---";
+        let myCung = getCungPhi(selectedYear, genderIdx);
+        let lg = getLogic(c, h);
+        
+        let cungHTML = "";
+        for (let tCung in batTrach[myCung]) {
+            let res = batTrach[myCung][tCung];
+            cungHTML += `<div class="cung-item">+ Phối <b>${tCung}</b>: <span class="${["Sinh Khí", "Diên Niên", "Thiên Y", "Phục Vị"].includes(res[0])?'txt-green':'txt-red'}">${res[0]}</span><br><span style="color:#666; font-size:0.7rem;">${res[1]}</span></div>`;
+        }
+
+        app.innerHTML = `
+            <div class="card" style="display:block">
+                <div class="header">
+                    <div><span class="title">${selectedYear} - ${name}</span><span class="nap-am">${nAm}</span></div>
+                    <div class="cung-phi"><span style="color:${genderIdx==0?'var(--cyan)':'var(--pink)'}">Cung: ${myCung}</span></div>
+                </div>
+                <div class="gender-select">
+                    <button class="gender-btn ${genderIdx==0?'active-nam':''}" onclick="setGender(0)">XEM NAM</button>
+                    <button class="gender-btn ${genderIdx==1?'active-nu':''}" onclick="setGender(1)">XEM NỮ</button>
+                </div>
+
+                <div class="logic-section">
+                    <div class="box b-info"><span class="label" style="color:var(--cyan)">⚔️ PHỐI CUNG PHI (Mệnh cung + Đối tác)</span>${cungHTML}</div>
+                    
+                    <div class="box b-good">
+                        <span class="label" style="color:var(--green)">💰 Hợp Tài Chính: Can ${lg.canHop}</span>
+                        <span class="reason">Thiên Can là lộc trời. Khi gặp người/ngày/giờ có Can ${lg.canHop}, các thủ tục giấy tờ, ký kết sẽ rất thuận lợi.</span>
+                        <span class="app-note">📍 Ứng dụng: Ưu tiên thu nợ, ký hợp đồng, mở ví lấy hên vào giờ này.</span>
+                    </div>
+
+                    <div class="box b-good">
+                        <span class="label" style="color:var(--cyan)">💼 Hợp Làm Ăn: Tuổi ${lg.chiTam}</span>
+                        <span class="reason">Tam hợp là sự đồng lòng. Những người này sẽ có cùng cách làm việc và tầm nhìn với bạn.</span>
+                        <span class="app-note">📍 Ứng dụng: Chọn cộng sự, khởi công dự án vào ngày/giờ có Chi này.</span>
+                    </div>
+
+                    <div class="box b-good">
+                        <span class="label" style="color:var(--pink)">❤️ Hợp Hôn Nhân: Tuổi ${lg.chiLuc}</span>
+                        <span class="reason">Lục hợp là sự thấu hiểu ngầm. Giúp duy trì sự hòa thuận và gắn kết bền lâu về tình cảm.</span>
+                        <span class="app-note">📍 Ứng dụng: Tốt để gặp mặt, kết hôn hoặc hóa giải mâu thuẫn gia đình.</span>
+                    </div>
+
+                    <div class="box b-warn">
+                        <span class="label" style="color:var(--yellow)">⚠️ Khắc khẩu: Can ${lg.canXung}</span>
+                        <span class="reason">Đối xung về tư tưởng. Dễ xảy ra tranh cãi vô cớ do không hiểu ý nhau.</span>
+                        <span class="app-note">📍 Chú ý: Gặp ngày/người này nên kiềm chế lời nói, tránh ra quyết định quan trọng.</span>
+                    </div>
+
+                    <div class="box b-bad">
+                        <span class="label" style="color:var(--red)">💀 Đại kỵ: Tuổi ${lg.chiXung}</span>
+                        <span class="reason">Thế đối đầu trực diện. Dễ gây đổ vỡ tài sản, tai nạn hoặc thất bại thảm hại.</span>
+                        <span class="app-note">📍 Tuyệt đối: Không khai trương, không đi xa, không đầu tư lớn vào giờ/ngày này.</span>
+                    </div>
+                </div>
+                <textarea placeholder="Ghi chú đối tác..."></textarea>
+            </div>`;
+    }
+
+    initList();
+</script>
+</body>
+</html>
